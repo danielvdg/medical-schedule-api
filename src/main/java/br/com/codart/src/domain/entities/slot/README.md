@@ -61,3 +61,4 @@ Os testes unitários devem cobrir pelo menos 80% de todo o código dessa classe.
 * STATIC FACTORY METHOD
 * QUALIDADE DE CÓDIGO
 * RESPONSABILIDADE ÚNICA
+* OBJETO ANEMICO 
