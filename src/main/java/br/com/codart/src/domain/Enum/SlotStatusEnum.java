@@ -5,5 +5,6 @@ public enum SlotStatusEnum {
     RESERVED ,
     BLOCKED,
     CANCELLED,
-    RESCHEDULED
+    RESCHEDULED,
+    DEFAULT
 }

@@ -17,38 +17,51 @@ public class Slot {
         this.startTime = startTime;
         this.endTime = endTime;
         this.slotStatus = slotStatus;
+
+        validateConstructor(this);
+    }
+
+    public void validateConstructor(Slot slot) {
+        if(slot.slotId == null || slot.startTime == null || slot.endTime == null || slot.slotStatus == null) {
+            throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
+        }
+
+        if(slot.slotId <= 0) {
+            throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
+        }
+
+        if (slot.startTime.isAfter(slot.endTime)) {
+            throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
+        }
+
+        if(slot.startTime.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
+        }
+
+        if (slot.endTime.isBefore(slot.startTime)) {
+            throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
+        }
+
+        if (slot.endTime.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
+        }
+
     }
 
     public Long getSlotId() {
         return slotId;
     }
 
-    public void setSlotId(Long slotId) {
-        this.slotId = slotId;
-    }
-
     public LocalDateTime getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
     }
 
     public SlotStatusEnum getSlotStatus() {
         return slotStatus;
     }
 
-    public void setSlotStatus(SlotStatusEnum slotStatus) {
-        this.slotStatus = slotStatus;
-    }
-
     public LocalDateTime getEndTime() {
         return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
     }
 
     // Métodos de Validação

@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class SlotTest {
@@ -22,7 +21,6 @@ class SlotTest {
         @Test
         void testBlockSlotExpired() {
             Slot slot = new Slot(1L, LocalDateTime.now().minusHours(2), LocalDateTime.now().minusHours(1), SlotStatusEnum.AVAILABLE);
-
             Exception exception = assertThrows(IllegalStateException.class, slot::blockSlot);
 
             assertEquals(ResourceMessage.SLOT_EXPIRED.getMessage(), exception.getMessage());
@@ -128,38 +126,9 @@ class SlotTest {
         }
 
         @Test
-        void testSetSlogId() {
-            Slot slot = new Slot(1L, LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), SlotStatusEnum.RESERVED);
-            slot.setSlotId(2L);
-            assertEquals(2L, slot.getSlotId(), "O ID do slot deveria ser 2.");
-        }
-        @Test
-        void testeSetStartTime() {
-            Slot slot = new Slot(1L, LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), SlotStatusEnum.RESERVED);
-            LocalDateTime newStartTime = LocalDateTime.now().plusHours(3);
-            slot.setStartTime(newStartTime);
-            assertEquals(newStartTime, slot.getStartTime(), "O horário de início deveria ter sido atualizado.");
-        }
-
-        @Test
-        void testeSetEndTime() {
-            Slot slot = new Slot(1L, LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), SlotStatusEnum.RESERVED);
-            LocalDateTime newEndTime = LocalDateTime.now().plusHours(3);
-            slot.setEndTime(newEndTime);
-            assertEquals(newEndTime, slot.getEndTime(), "O horário de fim deveria ter sido atualizado.");
-        }
-
-        @Test
         void TestGetSlotStatus() {
             Slot slot = new Slot(1L, LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), SlotStatusEnum.RESERVED);
             assertEquals(SlotStatusEnum.RESERVED, slot.getSlotStatus(), "O slot deveria estar reservado.");
-        }
-
-        @Test
-        void testSetSlotStatus() {
-            Slot slot = new Slot(1L, LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), SlotStatusEnum.RESERVED);
-            slot.setSlotStatus(SlotStatusEnum.BLOCKED);
-            assertEquals(SlotStatusEnum.BLOCKED, slot.getSlotStatus(), "O slot deveria estar bloqueado.");
         }
 
         @Test
@@ -176,6 +145,33 @@ class SlotTest {
             Slot slot = new Slot(1L, LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), SlotStatusEnum.RESERVED);
             assertEquals(String.format("Slot{slotId=%d, startTime=%s, endTime=%s, slotStatus=%s}",
                     slot.getSlotId(), slot.getStartTime(), slot.getEndTime(), slot.getSlotStatus()), slot.toString());
+        }
+    }
+
+    @Nested
+    @DisplayName("Teste de construtor da classe")
+    class SlotConstructorTest {
+        @Test
+        @DisplayName("Teste de construtor da classe criação com sucesso")
+        void testConstructor() {
+            Slot slot = new Slot(1L, LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), SlotStatusEnum.RESERVED);
+
+            assertEquals(1L, slot.getSlotId(), "O ID do slot deveria ser 1.");
+            assertEquals(SlotStatusEnum.RESERVED, slot.getSlotStatus(), "O slot deveria estar reservado.");
+        }
+
+        @Test
+        @DisplayName("Teste com construtor erro de horário de fim menor que o horário de início")
+        void testConstructorInvalidEndTime() {
+
+            LocalDateTime startTime = LocalDateTime.now().plusHours(2);
+            LocalDateTime endTime = LocalDateTime.now().plusHours(1);
+            Long slotId = 1L;
+
+            Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                    new Slot(slotId, startTime, endTime, SlotStatusEnum.RESERVED));
+
+            assertNotNull(exception);
         }
     }
 

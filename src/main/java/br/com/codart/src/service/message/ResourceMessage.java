@@ -4,7 +4,9 @@ public enum ResourceMessage {
     SLOT_EXPIRED("O slot expirou."),
     SLOT_BLOCKED ("O slot foi bloqueado."),
     NOT_AVAILABLE("O slot solicitado nao esta disponivel."),
-    NOT_RESERVED("O slot solicitado nao esta reservado.");
+    NOT_RESERVED("O slot solicitado nao esta reservado."),
+    SLOT_INVALID("O slot selecionado é inválido."),
+    SCHEDULE_INVALID("O horário selecionado é inválido.");
 
     private final String message;
 
