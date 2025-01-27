@@ -4,15 +4,16 @@ import br.com.codart.src.domain.Enum.SlotStatusEnum;
 import br.com.codart.src.service.message.ResourceMessage;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 public class Slot {
 
-    private Long slotId;
+    private final Long slotId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private SlotStatusEnum slotStatus;
 
-    public Slot(Long slotId, LocalDateTime startTime, LocalDateTime endTime, SlotStatusEnum slotStatus) {
+    private Slot(Long slotId, LocalDateTime startTime, LocalDateTime endTime, SlotStatusEnum slotStatus) {
         this.slotId = slotId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -21,7 +22,7 @@ public class Slot {
         validateConstructor(this);
     }
 
-    public void validateConstructor(Slot slot) {
+    private void validateConstructor(Slot slot) {
         if(slot.slotId == null || slot.startTime == null || slot.endTime == null || slot.slotStatus == null) {
             throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
         }
@@ -33,19 +34,6 @@ public class Slot {
         if (slot.startTime.isAfter(slot.endTime)) {
             throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
         }
-
-        if(slot.startTime.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
-        }
-
-        if (slot.endTime.isBefore(slot.startTime)) {
-            throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
-        }
-
-        if (slot.endTime.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException(ResourceMessage.SLOT_INVALID.getMessage());
-        }
-
     }
 
     public Long getSlotId() {
@@ -102,6 +90,10 @@ public class Slot {
     }
 
     // Métodos de Ação
+
+    public static Slot createSlot(Long slotId, LocalDateTime startTime, LocalDateTime endTime, SlotStatusEnum slotStatus) {
+        return new Slot(slotId, startTime, endTime, slotStatus);
+    }
 
     /**
      * Bloquear um Slot
@@ -178,5 +170,38 @@ public class Slot {
                 '}';
     }
 
+
+    // metodo builder
+
+    public static class Builder {
+        private Long slotId;
+        private LocalDateTime startTime;
+        private LocalDateTime endTime;
+        private SlotStatusEnum slotStatus;
+
+        public Builder slotId(Long slotId) {
+            this.slotId = slotId;
+            return this;
+        }
+
+        public Builder startTime(LocalDateTime startTime) {
+            this.startTime = startTime;
+            return this;
+        }
+
+        public Builder endTime(LocalDateTime endTime) {
+            this.endTime = endTime;
+            return this;
+        }
+
+        public Builder slotStatus(SlotStatusEnum slotStatus) {
+            this.slotStatus = slotStatus;
+            return this;
+        }
+
+        public Slot build() {
+            return new Slot(slotId, startTime, endTime, slotStatus);
+        }
+    }
 
 }

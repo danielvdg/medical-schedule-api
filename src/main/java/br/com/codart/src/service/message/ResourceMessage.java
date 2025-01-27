@@ -6,7 +6,10 @@ public enum ResourceMessage {
     NOT_AVAILABLE("O slot solicitado nao esta disponivel."),
     NOT_RESERVED("O slot solicitado nao esta reservado."),
     SLOT_INVALID("O slot selecionado é inválido."),
-    SCHEDULE_INVALID("O horário selecionado é inválido.");
+    SCHEDULE_INVALID("O horário selecionado é inválido."),
+    SCHEDULE_NOT_NULL("A data do agendamento nao pode ser nula"),
+    SCHEDULE_BLOCKED("O horário selecionado é bloqueado."),
+    SCHEDULE_RESERVED("O horário selecionado ja foi reservado.");
 
     private final String message;
 
